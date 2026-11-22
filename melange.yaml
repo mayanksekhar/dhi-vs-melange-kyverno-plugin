@@ -1,0 +1,30 @@
+package:
+  name: kyverno-plugin-melange-demo
+  version: 0.6.1
+  epoch: 0
+  description: Kyverno plugin for Policy Reporter, built from kyverno/policy-reporter-plugins
+  copyright:
+    - license: Apache-2.0
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - build-base
+      - busybox
+      - ca-certificates-bundle
+      - go
+pipeline:
+  - uses: git-checkout
+    with:
+      repository: https://github.com/kyverno/policy-reporter-plugins
+      tag: kyverno-plugin-v0.6.1
+      expected-commit: 2c04b1b969b59bf95606dc55b8dbdbb8b8b06f2a
+  - uses: go/build
+    with:
+      modroot: plugins/kyverno
+      packages: .
+      output: kyverno-plugin
+      ldflags: -X main.Version=0.6.1
